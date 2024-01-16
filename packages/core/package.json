@@ -32,5 +32,10 @@
     "vite-plugin-dts": "^3.7.1",
     "vue": "^3.3.11",
     "vue-tsc": "^1.8.25"
+  },
+  "dependencies": {
+    "@tiptap/pm": "^2.1.16",
+    "@tiptap/starter-kit": "^2.1.16",
+    "@tiptap/vue-3": "^2.1.16"
   }
 }
