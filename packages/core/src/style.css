@@ -1,5 +1,13 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-:root {
+/* see https://tailwindcss.com/docs/using-with-preprocessors#build-time-imports */
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+@import "./preflight.css";
+@import "./base.css";
+@import "./prose.css";
+
+
+/* css var */
+.papyrus-root {
+    --editor-content-padding: 0 10px;
 }

@@ -1,0 +1,23 @@
+.papyrus-root {
+    @apply flex flex-col bg-white text-slate-900 rounded-lg px-6 py-8 ring-1 ring-slate-900/5 shadow-xl;
+    @apply dark:bg-slate-800 dark:text-slate-400;
+}
+
+.papyrus-editor-content {
+    width: 100%;
+    @apply flex-grow overflow-y-auto border-gray-300 border-solid border-2;
+}
+
+.papyrus-editor-toolbar {
+    @apply border-gray-300 border-solid border-x-2 border-t-2 h-10 flex  flex-nowrap items-center;
+  
+    .papyrus-editor-toolbar-btn {
+      @apply ml-1 hover:bg-gray-100 w-6 h-6 rounded-md flex items-center justify-center;
+    }
+  
+    .papyrus-editor-toolbar-btn.checked {
+      @apply bg-gray-200;
+    }
+}
+
+
