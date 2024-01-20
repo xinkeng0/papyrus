@@ -18,10 +18,24 @@ export default defineConfig({
   build: {
     lib: {
       // Could also be a dictionary or array of multiple entry points
-      entry: "src/index.ts",
+      // https://github.com/vitejs/vite/issues/1579
+      // https://github.com/vitejs/vite/discussions/1736
+      entry: {
+        index: "src/index.ts",
+        "@tiptap/vue3": "src/@tiptap-vue3.ts",
+        "@tiptap/pm/model": "src/@tiptap-pm-model.ts",
+      },
       name: "Papyrus",
+      formats: ["es", "cjs"],
       // the proper extensions will be added
-      fileName: "papyrus",
+      fileName: (format, name) => {
+        switch (format) {
+          case "es":
+            return `${name}.js`;
+          case "cjs":
+            return `${name}.cjs`;
+        }
+      },
     },
     rollupOptions: {
       // 确保外部化处理那些你不想打包进库的依赖
