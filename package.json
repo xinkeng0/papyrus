@@ -2,7 +2,10 @@
   "name": "@xinkeng0/papyrus-monorepo",
   "private": true,
   "version": "0.0.0",
-  "scripts": {},
+  "scripts": {
+    "packages:dev": "pnpm --filter \"./packages/**\" dev",
+    "example:dev": "pnpm --filter \"./example/\" run dev"
+  },
   "devDependencies": {
     "@types/node": "^20.11.3",
     "@vitejs/plugin-vue": "^4.5.2",
@@ -12,7 +15,6 @@
     "eslint-plugin-vue": "^9.20.1",
     "typescript": "^5.2.2",
     "vite": "^5.0.8",
-    "vue": "^3.3.11",
     "vue-tsc": "^1.8.25"
   }
 }
