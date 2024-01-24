@@ -1,5 +1,5 @@
-import { PapyrusImage } from "./image.js";
+import { PapyrusImage } from "./image";
 
-export * from "./image.js";
+export * from "./image";
 
 export default PapyrusImage;
