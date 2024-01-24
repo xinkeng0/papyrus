@@ -9,6 +9,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@xinkeng0/papyrus": "workspace:^"
+    "@vueuse/core": "^10.7.2",
+    "@vueuse/integrations": "^10.7.2",
+    "@xinkeng0/papyrus": "workspace:^",
+    "idb-keyval": "^6.2.1",
+    "vue": "^3.3.11"
   }
 }
