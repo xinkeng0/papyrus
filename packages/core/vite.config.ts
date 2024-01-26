@@ -5,6 +5,7 @@ import Icons from "unplugin-icons/vite";
 import IconsResolver from "unplugin-icons/resolver";
 import Components from "unplugin-vue-components/vite";
 import dts from "vite-plugin-dts";
+import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -24,6 +25,11 @@ export default defineConfig({
       insertTypesEntry: true,
     }),
   ],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "src"),
+    },
+  },
   build: {
     lib: {
       // Could also be a dictionary or array of multiple entry points
