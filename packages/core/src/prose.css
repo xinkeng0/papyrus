@@ -102,3 +102,8 @@
     }
 
 }
+
+
+.papyrus-editor-content .ProseMirror-focused {
+    outline: none;
+}
