@@ -1,28 +1,38 @@
-/* special tiptap style */
+/* typography style */
+/**
+* @see https://www.shadcn-vue.com/docs/typography.html
+*/
+
+.papyrus-root {
+    --block-margin: 0.5rem;
+}
+
 .papyrus-editor-content .tiptap {
     width: 100%;
     height: 100%;
     padding: var(--editor-content-padding);
     overflow: auto;
 
-    h1,h2,h3,h4,h5,h6 {
-        @apply font-bold;
-    }
-
     h1 {
-        @apply text-3xl my-6;
+        @apply scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl;
     }
 
     h2 {
-        @apply text-2xl my-5;
+        @apply scroll-m-20 text-3xl font-semibold tracking-tight transition-colors first:mt-0;
     }
 
     h3 {
-        @apply text-xl;
+        @apply scroll-m-20 text-2xl font-semibold tracking-tight;
+    }
+
+    h4,
+    h5,
+    h6 {
+        @apply scroll-m-20 text-xl font-semibold tracking-tight;
     }
 
     p {
-        margin: 0 0 0.25em 0;
+        @apply leading-7 [&:not(:first-child)]:mt-[--block-margin];
     }
 
     p.is-empty::before {
@@ -43,7 +53,7 @@
 
     ul {
         /* margin-left 1rem , ensure list style correct*/
-        @apply list-disc ml-4;
+        @apply list-disc list-inside my-6 ml-4 [&>li]:mt-[--block-margin];
     }
 
     ol {
@@ -51,54 +61,88 @@
     }
 
     ul[data-type="taskList"] {
+
         p {
             margin: 0;
-          }
-        
+        }
+
         li {
-            display: flex;
-        
-            > label {
+            @apply flex items-baseline;
+
+            >label {
                 flex: 0 0 auto;
                 margin-right: 0.5rem;
                 user-select: none;
-        }
-    
-        > div {
-            flex: 1 1 auto;
-        }
-    
-        ul li,
-        ol li {
-            display: list-item;
-        }
-    
-        ul[data-type="taskList"] > li {
-            display: flex;
-        }
+            }
+
+            >div {
+                flex: 1 1 auto;
+            }
+
+            ul li,
+            ol li {
+                display: list-item;
+            }
+
+            ul[data-type="taskList"]>li {
+                display: flex;
+            }
         }
     }
 
     /* fix https://github.com/ueberdosis/tiptap/issues/118 */
-    li > p:first-child {
+    li>p:first-child {
         display: inline;
         margin: 0;
     }
 
 
     blockquote {
-        display: block;
-        padding-left: 10px;
-        margin: 10px 0;
-        position: relative;
 
-        &:before {
+        @apply mt-[--block-margin] border-l-2 pl-6 italic;
+
+        /* display: block;
+        margin: 10px 0;
+        position: relative; */
+        /* &:before {
             @apply block w-0.5 rounded-sm bg-gray-300 absolute;
             content: "";
             top: 0;
             left: 0;
             bottom: 0;
+        } */
+    }
+
+    code {
+        @apply rounded bg-muted p-[0.25rem] font-mono text-sm font-semibold;
+    }
+
+    pre {
+        @apply mt-[--block-margin] bg-muted;
+        code {
+            @apply block;
         }
+    }
+
+    a {
+        @apply text-blue-600 no-underline hover:underline cursor-pointer;
+    }
+
+
+    /* table */
+    table {
+        tr {
+            @apply m-0 border-t p-0 even:bg-muted;
+        }
+
+        td {
+            @apply border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right;
+        }
+
+        th {
+            @apply border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right;
+        }
+
     }
 
 }
