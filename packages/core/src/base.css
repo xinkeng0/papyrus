@@ -1,34 +1,42 @@
 /* base layout css */
 .papyrus-root {
   --editor-content-padding: 0.5rem;
-}
 
-.papyrus-editor {
+  .papyrus-editor {
     @apply w-full h-full flex flex-col rounded-lg ring-ring shadow-xl;
-}
+  }
 
-.papyrus-editor-content {
+  .papyrus-editor-content {
     width: 100%;
     @apply flex-grow overflow-y-auto border-solid border-2;
-}
+  }
 
-.papyrus-editor-toolbar {
-    @apply border-solid border-x-2 border-t-2 h-10 flex  flex-nowrap items-center;
-  
+  .papyrus-editor-toolbar {
+    @apply border-solid border-x-2 border-t-2 h-10 flex flex-nowrap items-center;
+
     .papyrus-editor-toolbar-btn {
       @apply ml-1 hover:bg-muted min-w-6 h-6 rounded-md flex items-center justify-center;
     }
-  
+
     .papyrus-editor-toolbar-btn.checked {
       @apply bg-accent;
     }
-}
-
-.papyrus-editor-bubble-menu {
-  @apply flex p-1 rounded;
-  button {
-    @apply px-1;
   }
+
+  .papyrus-editor-bubble-menu {
+    @apply flex p-1 rounded;
+
+    button {
+      @apply px-1;
+    }
+  }
+
+  .suggestion-command-root {
+    @apply flex flex-col overflow-hidden rounded-md bg-popover text-popover-foreground;
+
+    .suggestion-command-group-content {
+      @apply flex flex-wrap;
+    }
+  }
+
 }
-
-
