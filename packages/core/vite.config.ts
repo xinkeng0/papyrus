@@ -38,6 +38,7 @@ export default defineConfig({
       //
       entry: {
         index: "src/index.ts",
+        "locale/index": "src/locale/index.ts",
         "@tiptap/vue3": "src/@tiptap-vue3.ts",
         "@tiptap/pm/model": "src/@tiptap-pm-model.ts",
         "@tiptap/pm/state": "src/@tiptap-pm-state.ts",
