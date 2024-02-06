@@ -1,5 +1,5 @@
-import { Fragment, Component, markRaw } from "vue";
-import { type Editor } from "@tiptap/core";
+import { Fragment, Component, ref, defineComponent } from "vue";
+import { Editor } from "@tiptap/core";
 import BoldIcon from "~icons/mdi/format-bold";
 import ItalicIcon from "~icons/mdi/format-italic";
 import StrikeIcon from "~icons/mdi/format-strikethrough-variant";
@@ -17,6 +17,8 @@ import AlignCenterIcon from "~icons/mdi/format-align-center";
 import AlignRightIcon from "~icons/mdi/format-align-right";
 import AlignJustifyIcon from "~icons/mdi/format-align-justify";
 import HorizontalRuleIcon from "~icons/material-symbols/horizontal-rule";
+import ClearFormatIcon from "~icons/mdi/format-clear";
+import { rgbToHex } from "@/lib/utilities";
 export interface Toolbar {
   name: string;
   title?: string;
@@ -26,6 +28,17 @@ export interface Toolbar {
 }
 export const createToolbars = (editor: Editor): Toolbar[] => {
   return [
+    {
+      name: "Clear",
+      compoent: ClearFormatIcon,
+      title: "ClearStyle",
+      checked: () => {
+        return false;
+      },
+      onClick: () => {
+        editor.chain().focus().unsetAllMarks().run();
+      },
+    },
     {
       name: "Bold",
       compoent: BoldIcon,
@@ -82,30 +95,48 @@ export const createToolbars = (editor: Editor): Toolbar[] => {
     },
     {
       name: "Color",
-      compoent: (props) => {
-        return (
-          <Fragment>
-            <input
-              class="w-6 h-6"
-              type="color"
-              onInput={(event) =>
-                editor.chain().focus().setColor(event.target?.value).run()
+      compoent: defineComponent({
+        props: {
+          editor: Editor,
+        },
+        setup: (props) => {
+          const getCurrentColor = (color: string) => {
+            if (color) {
+              if (color.startsWith("#")) {
+                return color;
               }
-              value={editor.getAttributes("textStyle").color}
-            />
-            <ColorTextIcon
-              onClick={() =>
-                editor
-                  .chain()
-                  .focus()
-                  .setColor(editor.getAttributes("textStyle").color)
-                  .run()
-              }
-            />
-          </Fragment>
-        );
-      },
-
+              return rgbToHex(
+                color
+                  .substring(4, color.length - 1)
+                  .split(",")
+                  .map(Number),
+              );
+            }
+            return "#000000";
+          };
+          return () => (
+            <div class={"flex items-center"}>
+              <input
+                class="w-6 h-6"
+                type="color"
+                onInput={(event) => {
+                  editor.chain().focus().setColor(event.target?.value).run();
+                }}
+                value={getCurrentColor(editor.getAttributes("textStyle").color)}
+              />
+              <ColorTextIcon
+                onClick={() =>
+                  editor
+                    .chain()
+                    .focus()
+                    .setColor(editor.getAttributes("textStyle").color)
+                    .run()
+                }
+              />
+            </div>
+          );
+        },
+      }),
       checked: () => {
         return editor.isActive({ textStyle: "color" });
       },
@@ -200,8 +231,12 @@ export const createToolbars = (editor: Editor): Toolbar[] => {
         return editor.isActive("link");
       },
       onClick: () => {
+        // TODO storage https://github.com/ueberdosis/tiptap/issues/369
+        const { view, state } = editor;
+        const { from, to } = view.state.selection;
+        const text = state.doc.textBetween(from, to, "");
         editor.commands.toggleLink({
-          href: "https://example.com",
+          href: text,
           target: "_blank",
         });
       },

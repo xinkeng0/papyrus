@@ -3,7 +3,10 @@ import { Blockquote, BlockquoteOptions } from "@tiptap/extension-blockquote";
 import { Bold, BoldOptions } from "@tiptap/extension-bold";
 import { BulletList, BulletListOptions } from "@tiptap/extension-bullet-list";
 import { Code, CodeOptions } from "@tiptap/extension-code";
-import { CodeBlock, CodeBlockOptions } from "@tiptap/extension-code-block";
+import {
+  CodeBlockLowlight,
+  CodeBlockLowlightOptions,
+} from "@tiptap/extension-code-block-lowlight";
 import { Document } from "@tiptap/extension-document";
 import { Dropcursor, DropcursorOptions } from "@tiptap/extension-dropcursor";
 import { Gapcursor } from "@tiptap/extension-gapcursor";
@@ -33,13 +36,21 @@ import Highlight from "@tiptap/extension-highlight";
 import Underline from "@tiptap/extension-underline";
 import TextStyle from "@tiptap/extension-text-style";
 import Color from "@tiptap/extension-color";
+import { PapyrusCommands, suggestion } from "../extension-commands";
+import { createItems } from "./suggestionInit";
+import { common, createLowlight } from "lowlight";
+import Table from "@tiptap/extension-table";
+import TableCell from "@tiptap/extension-table-cell";
+import TableHeader from "@tiptap/extension-table-header";
+import TableRow from "@tiptap/extension-table-row";
+import { locale } from "@/index";
 
 export interface PapyrusStarterKitOptions {
   blockquote: Partial<BlockquoteOptions> | false;
   bold: Partial<BoldOptions> | false;
   bulletList: Partial<BulletListOptions> | false;
   code: Partial<CodeOptions> | false;
-  codeBlock: Partial<CodeBlockOptions> | false;
+  codeBlockLowlight: Partial<CodeBlockLowlightOptions> | false;
   document: false;
   dropcursor: Partial<DropcursorOptions> | false;
   gapcursor: false;
@@ -55,22 +66,26 @@ export interface PapyrusStarterKitOptions {
   text: false;
 }
 
+/**
+ * PapyrusStarterKit
+ * <li>Now,Extension.configure loss the plugin default configuration
+ * @see https://github.com/ueberdosis/tiptap/pull/3998
+ */
 export const PapyrusStarterKit = Extension.create<PapyrusStarterKitOptions>({
   name: "papyrusStarterKit",
   addOptions() {
     return {
       ...this.parent?.(),
+      codeBlockLowlight: {
+        lowlight: createLowlight(common),
+      },
     };
   },
   addExtensions() {
     const extensions = [];
 
     if (this.options.blockquote !== false) {
-      extensions.push(
-        Blockquote.extend({ draggable: true }).configure(
-          this.options?.blockquote,
-        ),
-      );
+      extensions.push(Blockquote.configure(this.options?.blockquote));
     }
 
     if (this.options.bold !== false) {
@@ -82,14 +97,14 @@ export const PapyrusStarterKit = Extension.create<PapyrusStarterKitOptions>({
     }
 
     if (this.options.code !== false) {
-      extensions.push(Code.configure(this.options?.code));
+      extensions.push(
+        this.options?.code ? Code.configure(this.options?.code) : Code,
+      );
     }
 
-    if (this.options.codeBlock !== false) {
+    if (this.options.codeBlockLowlight !== false) {
       extensions.push(
-        CodeBlock.extend({ draggable: true }).configure(
-          this.options?.codeBlock,
-        ),
+        CodeBlockLowlight.configure(this.options?.codeBlockLowlight),
       );
     }
 
@@ -110,9 +125,7 @@ export const PapyrusStarterKit = Extension.create<PapyrusStarterKitOptions>({
     }
 
     if (this.options.heading !== false) {
-      extensions.push(
-        Heading.extend({ draggable: true }).configure(this.options?.heading),
-      );
+      extensions.push(Heading.configure(this.options?.heading));
     }
 
     if (this.options.history !== false) {
@@ -136,11 +149,7 @@ export const PapyrusStarterKit = Extension.create<PapyrusStarterKitOptions>({
     }
 
     if (this.options.paragraph !== false) {
-      extensions.push(
-        Paragraph.extend({ draggable: true }).configure(
-          this.options?.paragraph,
-        ),
-      );
+      extensions.push(Paragraph.configure(this.options?.paragraph));
     }
 
     if (this.options.strike !== false) {
@@ -165,6 +174,15 @@ export const PapyrusStarterKit = Extension.create<PapyrusStarterKitOptions>({
       Underline.configure({}),
       TextStyle,
       Color.configure({}),
+      Table.configure({
+        resizable: true,
+      }),
+      TableRow,
+      TableHeader,
+      TableCell,
+      PapyrusCommands.configure({
+        suggestion: suggestion(createItems()),
+      }),
     );
     return extensions;
   },
