@@ -19,7 +19,7 @@
     }
 
     .papyrus-editor-toolbar-btn.checked {
-      @apply bg-accent;
+      @apply bg-muted;
     }
   }
 
